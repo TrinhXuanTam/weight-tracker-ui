@@ -3,12 +3,14 @@ import { createContext, useEffect, useMemo, useState } from 'react';
 import { getUser } from '@/modules/auth/api/get-user';
 import { signOut } from '@/modules/auth/api/sign-out';
 import { signIn } from '@/modules/auth/api/sign-in';
+import { signUp } from '@/modules/auth/api/sign-up';
 
 type AuthContextType = {
   user: User | null;
   error: string | null;
   loading: boolean;
   signIn: (email: string, password: string, rememberMe: boolean) => void;
+  signUp: (fullName: string, email: string, password: string) => void;
   signOut: () => void;
 };
 
@@ -28,6 +30,15 @@ export function AuthProvider(props: AuthProviderProps) {
     setLoading(true);
     setError(null);
     signIn(email, password, rememberMe)
+      .then(setUser)
+      .catch((error: Error) => setError(error.message))
+      .finally(() => setLoading(false));
+  }
+
+  function signUpUser(fullName: string, email: string, password: string) {
+    setLoading(true);
+    setError(null);
+    signUp(fullName, email, password)
       .then(setUser)
       .catch((error: Error) => setError(error.message))
       .finally(() => setLoading(false));
@@ -55,6 +66,7 @@ export function AuthProvider(props: AuthProviderProps) {
       loading,
       signIn: signInUser,
       signOut: signOutUser,
+      signUp: signUpUser,
     }),
     [user, loading, error],
   );
