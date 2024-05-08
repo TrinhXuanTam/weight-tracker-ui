@@ -4,10 +4,5 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 export function PrivateRoute() {
   const auth = useAuth();
-
-  if (!auth.user) {
-    return <Navigate to={authPaths.signIn} />;
-  }
-
-  return <Outlet />;
+  return auth.user ? <Outlet /> : <Navigate to={authPaths.signIn} />;
 }

@@ -44,7 +44,7 @@ export function AuthProvider(props: AuthProviderProps) {
   useEffect(() => {
     getUser()
       .then(setUser)
-      .catch((error: Error) => setError(error.message))
+      .catch(() => setUser(null))
       .finally(() => setLoadingInitial(false));
   }, []);
 

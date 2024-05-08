@@ -9,12 +9,9 @@ type AuthLayoutProps = {
 
 export function AuthLayout(props: AuthLayoutProps) {
   const auth = useAuth();
-
-  if (auth.user) {
-    return Navigate({ to: '/' });
-  }
-
-  return (
+  return auth.user ? (
+    <Navigate to='/' />
+  ) : (
     <Box bg={colorPalette.primary}>
       <Container>
         <VStack height='100vh' alignItems='center' justifyContent='center'>

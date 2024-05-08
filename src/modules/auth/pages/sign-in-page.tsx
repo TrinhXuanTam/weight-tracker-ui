@@ -1,9 +1,20 @@
-import { Button, Checkbox, FormControl, FormErrorMessage, Input, VStack } from '@chakra-ui/react';
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Button,
+  Checkbox,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  VStack,
+} from '@chakra-ui/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import useAuth from '../hooks/use-auth';
+import useAuth from '@/modules/auth/hooks/use-auth';
 
 interface SignInFormData {
-  username: string;
+  email: string;
   password: string;
   rememberMe: boolean;
 }
@@ -17,18 +28,22 @@ export function SignInPage() {
   const auth = useAuth();
 
   const onSubmit: SubmitHandler<SignInFormData> = async (data) => {
-    await auth.signIn(data.username, data.password, data.rememberMe);
+    await auth.signIn(data.email, data.password, data.rememberMe);
   };
 
   return (
     <VStack>
+      {auth.error && (
+        <Alert status='error'>
+          <AlertIcon />
+          <AlertDescription>{auth.error}</AlertDescription>
+        </Alert>
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={Boolean(errors.username)}>
-          <Input
-            placeholder='Username'
-            {...register('username', { required: 'Username is required' })}
-          />
-          <FormErrorMessage>{errors.username && errors.username.message}</FormErrorMessage>
+        <FormControl isInvalid={Boolean(errors.email)}>
+          <Input placeholder='Email' {...register('email', { required: 'Email is required' })} />
+          <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={Boolean(errors.password)}>
