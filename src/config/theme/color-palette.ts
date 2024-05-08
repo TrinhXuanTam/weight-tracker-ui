@@ -1,4 +1,4 @@
 export const colorPalette = {
-  primary: '#ff5733',
-  background: '#ffffff',
+  primary: 'red.400',
+  primaryGradient: 'linear(to-r, red.400,pink.400)',
 };

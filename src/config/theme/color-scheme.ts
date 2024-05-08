@@ -1,1 +1,2 @@
-export const colorScheme = {};
+export const colorScheme = {
+};
