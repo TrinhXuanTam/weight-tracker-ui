@@ -8,7 +8,7 @@ type AuthContextType = {
   user: User | null;
   error: string | null;
   loading: boolean;
-  signIn: (email: string, password: string) => void;
+  signIn: (email: string, password: string, rememberMe: boolean) => void;
   signOut: () => void;
 };
 
@@ -24,12 +24,12 @@ export function AuthProvider(props: AuthProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
-  function signInUser(email: string, password: string) {
+  function signInUser(email: string, password: string, rememberMe: boolean) {
     setLoading(true);
     setError(null);
-    signIn(email, password)
+    signIn(email, password, rememberMe)
       .then(setUser)
-      .catch((error) => setError(error.message))
+      .catch((error: Error) => setError(error.message))
       .finally(() => setLoading(false));
   }
 
@@ -37,13 +37,14 @@ export function AuthProvider(props: AuthProviderProps) {
     setLoading(true);
     signOut()
       .then(() => setUser(null))
-      .catch((error) => setError(error.message))
+      .catch((error: Error) => setError(error.message))
       .finally(() => setLoading(false));
   }
 
   useEffect(() => {
     getUser()
       .then(setUser)
+      .catch((error: Error) => setError(error.message))
       .finally(() => setLoadingInitial(false));
   }, []);
 
